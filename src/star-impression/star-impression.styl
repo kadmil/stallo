@@ -1,0 +1,70 @@
+
+.star-impression
+  text-align center
+
+  position relative
+  .canvas-container
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    z-index 10
+    pointer-events none
+
+  .title
+    font-family Helvetica
+    color white
+    max-width 80%
+    margin 0 auto
+
+  &.-size-small .title
+    font-size 36px
+    margin-top 60px
+
+  &.-size-medium .title
+    font-size 56px
+    margin-top 80px
+
+  .description
+    font-family Helvetica
+    color white
+    margin 0 auto
+    line-height 1.3
+
+  &.-size-small .description
+    font-size 16px
+    margin-top 10px
+    max-width 80%
+
+  &.-size-medium .description
+    font-size 28px
+    margin-top 20px
+    max-width 65%
+
+  make-circle($radius)
+    width $radius
+    height $radius
+    border-radius $radius
+    display inline-block
+    line-height $radius
+
+  .impress-counter
+    color white
+    border 8px solid white
+    font-family Helvetica
+    font-weight 700
+
+  &.-size-medium .impress-counter
+    make-circle(135px)
+    font-size 70px
+    margin-top 35px
+    border-width 12px
+
+  &.-size-small .impress-counter
+    make-circle(65px)
+    font-size 36px
+    margin-top 20px
+    border-width 8px
+
+
