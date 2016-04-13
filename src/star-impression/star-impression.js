@@ -16,7 +16,7 @@ export default class StarImpression extends React.Component {
     this.stars = []
   }
 
-  initRender() {
+  initPhysics() {
     let elem = this.refs.canvasBox
 
     let w = this.props.width
@@ -36,11 +36,12 @@ export default class StarImpression extends React.Component {
 
     engine.world.gravity.y = 3
 
+    let fld = 20
     let ground = [
-      Bodies.rectangle(w * 0.5, 0, w, 20, { isStatic: true }),
-      Bodies.rectangle(0, h * 0.5, 20, h, { isStatic: true }),
-      Bodies.rectangle(w, h * 0.5, 20, h, { isStatic: true }),
-      Bodies.rectangle(w * 0.5, h, w, 20, { isStatic: true }),
+      Bodies.rectangle(w * 0.5, -0.5 * fld, w, fld, { isStatic: true }),
+      Bodies.rectangle(-0.5 * fld, h * 0.5, fld, h, { isStatic: true }),
+      Bodies.rectangle(w + 0.5 * fld, h * 0.5, fld, h, { isStatic: true }),
+      Bodies.rectangle(w * 0.5, h + 0.5 * fld, w, fld, { isStatic: true }),
     ]
 
     World.add(engine.world, ground);
@@ -149,25 +150,26 @@ export default class StarImpression extends React.Component {
       maxHeight: `${this.props.height}px`,
       minWidth:  `${this.props.width}px`,
       minHeight: `${this.props.height}px`,
-      backgroundColor: '#FF8F92',
+      backgroundColor: this.props.background,
     }
 
     let sizeState = (this.props.width < 800) ? 'small' : 'medium'
 
-    let title = 'Ну вот и все, ребята!'
-
-    let description = `
-      Я бы совсем не справился без вас, и все это было просто замечательно!
-      А вы как считаете? Оцените презентацию с помощью эмоций.
-    `
     return (
       <div className={ classNames( "star-impression", `-size-${sizeState}` ) } style={styleVal}>
 
         <div className='static-markup' ref='staticMarkup'>
-          <div className='title' ref='title'> { title } </div>
-          <div className='description' ref='description'> { description } </div>
+          <div className='title' ref='title'>
+            { this.props.title }
+          </div>
 
-          <div className='impress-counter' ref='counter'>{ this.props.counter }</div>
+          <div className='description' ref='description'>
+            { this.props.description }
+          </div>
+
+          <div className='impress-counter' ref='counter'>
+            { this.props.counter }
+          </div>
         </div>
 
 
@@ -176,16 +178,25 @@ export default class StarImpression extends React.Component {
     )
   }
 
-  componentDidMount() { this.initRender() }
+  componentDidMount() { this.initPhysics() }
   shouldComponentUpdate() { return false; }
 }
 
 StarImpression.propTypes = {
-  counter: React.PropTypes.number
+  counter:     React.PropTypes.number,
+  background:  React.PropTypes.string,
+  title:       React.PropTypes.string,
+  description: React.PropTypes.string,
 }
 
 StarImpression.defaultProps = {
-  counter: 0
+  counter: 0,
+  background: '#FF8F92',
+  title: 'Ну вот и все, ребята!',
+  description: `
+    Я бы совсем не справился без вас, и все это было просто замечательно!
+    А вы как считаете? Оцените презентацию с помощью эмоций.
+  `
 }
 
 
