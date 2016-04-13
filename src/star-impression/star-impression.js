@@ -1,13 +1,20 @@
 import React from 'react'
 import classNames from 'classnames'
+import $ from 'jquery'
 
 import './star-impression.styl'
+
+import Velocity from 'velocity-animate'
 
 // phys
 import { Engine, World, Bodies, Body, Common, Vertices } from 'matter-js'
 import CustomRender from './custom-renderer'
 
 export default class StarImpression extends React.Component {
+  constructor() {
+    super()
+    this.stars = []
+  }
 
   initRender() {
     let elem = this.refs.canvasBox
@@ -27,7 +34,7 @@ export default class StarImpression extends React.Component {
         }
     }});
 
-    engine.world.gravity.y = 2
+    engine.world.gravity.y = 3
 
     let ground = [
       Bodies.rectangle(w * 0.5, 0, w, 20, { isStatic: true }),
@@ -42,7 +49,37 @@ export default class StarImpression extends React.Component {
     this.physEngine = engine;
   }
 
+  animateBoom() {
+    Velocity(this.refs.title, { translateY: -50 },
+      {'duration': 60, delay: 45, easing: 'easeOutExpo', complete: () => {
+        Velocity(
+          this.refs.title,
+          { translateY: [ 0, [500, 20], -50] },
+          { duration: 400, queue: false }
+        )
+      }})
+
+    Velocity(this.refs.description, { translateY: -65 },
+      {'duration': 60, easing: 'easeOutExpo', complete: () => {
+         Velocity(
+          this.refs.description,
+          { translateY: [ 0, [500, 20], -65] },
+          { duration: 400, queue: false }
+        )
+      }})
+
+    Velocity(
+      this.refs.counter,
+      { scale: [ 1.0, [200, 8], 1.4] },
+      { duration: 800, queue: false }
+    )
+  }
+
   componentWillReceiveProps(newProps) {
+    this.animateBoom()
+
+    $( this.refs.counter ).text( newProps.counter )
+
     let newStarsCount = newProps.counter - this.props.counter
     let newStars = [];
     let w = this.props.width
@@ -77,7 +114,7 @@ export default class StarImpression extends React.Component {
       let forceMagnitude = Common.random(0.01, 0.05) * body.mass;
 
       Body.applyForce(body, body.position, {
-        x: (forceMagnitude + Common.random() * forceMagnitude) * Common.choose([1, -1]),
+        x: (forceMagnitude + 2.5 * Common.random() * forceMagnitude) * Common.choose([1, -1]),
         y: -forceMagnitude + Common.random() * -forceMagnitude
       });
       Body.setAngularVelocity(body, Common.random(-0.6, 0.6))
@@ -86,6 +123,24 @@ export default class StarImpression extends React.Component {
     }
 
     World.add(this.physEngine.world, newStars)
+
+    this.stars.push.apply( this.stars, newStars )
+
+    // Прибираться время от времени
+    let starsLimit = 100
+    let starTax = 50
+
+    if ( this.stars.length > starsLimit) {
+      let toRemove = Math.max(
+        this.stars.length - starsLimit + starTax,
+        0)
+
+      for( var i = 0; i < toRemove; ++i ) {
+        World.remove( this.physEngine.world, this.stars[i])
+      }
+
+      this.stars.splice(0, toRemove)
+    }
   }
 
   render() {
@@ -108,11 +163,11 @@ export default class StarImpression extends React.Component {
     return (
       <div className={ classNames( "star-impression", `-size-${sizeState}` ) } style={styleVal}>
 
-        <div className='static-markup'>
-          <div className='title'> { title } </div>
-          <div className='description'> { description } </div>
+        <div className='static-markup' ref='staticMarkup'>
+          <div className='title' ref='title'> { title } </div>
+          <div className='description' ref='description'> { description } </div>
 
-          <div className='impress-counter'>{ this.props.counter }</div>
+          <div className='impress-counter' ref='counter'>{ this.props.counter }</div>
         </div>
 
 
@@ -124,3 +179,13 @@ export default class StarImpression extends React.Component {
   componentDidMount() { this.initRender() }
   shouldComponentUpdate() { return false; }
 }
+
+StarImpression.propTypes = {
+  counter: React.PropTypes.number
+}
+
+StarImpression.defaultProps = {
+  counter: 0
+}
+
+

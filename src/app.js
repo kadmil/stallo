@@ -8,7 +8,7 @@ import './app.styl'
 class App extends React.Component {
   constructor() {
     super()
-    this.state = { counter: 10 }
+    this.state = { counter: 0 }
   }
 
   render(props) {
