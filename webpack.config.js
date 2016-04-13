@@ -23,6 +23,10 @@ module.exports = {
         loader: 'url-loader?limit=8192'
       },
       {
+        test: /\.(ttf|woff|eot)$/,
+        loader: 'file-loader'
+      },
+      {
         test: /\.js$/,
         loaders: ['react-hot', 'babel'],
         include: path.join(__dirname, 'src')

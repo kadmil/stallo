@@ -1,6 +1,43 @@
+@font-face
+  font-family: 'ALSSans'
+  src: url('./fonts/ALSSchlangesans.eot')
+  src: url('./fonts/ALSSchlangesans.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/ALSSchlangesans.woff') format('woff'),
+    url('./fonts/ALSSchlangesans.ttf') format('truetype')
+  font-weight: 500
+  font-style: normal
+
+@font-face
+  font-family: 'ALSSans'
+  src: url('./fonts/ALSSchlangesans-Black.eot')
+  src: url('./fonts/ALSSchlangesans-Black.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/ALSSchlangesans-Black.woff') format('woff'),
+    url('./fonts/ALSSchlangesans-Black.ttf') format('truetype')
+  font-weight: 900
+  font-style: normal
+
+@font-face
+  font-family: 'ALSSans'
+  src: url('./fonts/ALSSchlangesans-Light.eot')
+  src: url('./fonts/ALSSchlangesans-Light.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/ALSSchlangesans-Light.woff') format('woff'),
+    url('./fonts/ALSSchlangesans-Light.ttf') format('truetype')
+  font-weight: 300
+  font-style: normal
+
+@font-face
+  font-family: 'ALSSans'
+  src: url('./fonts/ALSSchlangesans-Bold.eot')
+  src: url('./fonts/ALSSchlangesans-Bold.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/ALSSchlangesans-Bold.woff') format('woff'),
+    url('./fonts/ALSSchlangesans-Bold.ttf') format('truetype');
+  font-weight: bold
+  font-style: normal
+
 
 .star-impression
   text-align center
+  font-family 'ALSSans', Helvetica
 
   position relative
   .canvas-container
@@ -13,10 +50,10 @@
     pointer-events none
 
   .title
-    font-family Helvetica
     color white
     max-width 80%
     margin 0 auto
+    font-weight bold
 
   &.-size-small .title
     font-size 36px
@@ -27,10 +64,10 @@
     margin-top 80px
 
   .description
-    font-family Helvetica
     color white
     margin 0 auto
     line-height 1.3
+    font-weight 500
 
   &.-size-small .description
     font-size 16px
