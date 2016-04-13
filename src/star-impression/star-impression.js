@@ -25,7 +25,7 @@ export default class StarImpression extends React.Component {
     let engine = Engine.create({
       render: {
         element: elem,
-        // controller: CustomRender,
+        controller: CustomRender,
         options: {
           background: 'transparent',
           wireframes: false,
@@ -33,8 +33,6 @@ export default class StarImpression extends React.Component {
           height: h
         }
     }});
-
-    engine.world.gravity.y = 3
 
     let fld = 20
     let ground = [
@@ -77,17 +75,23 @@ export default class StarImpression extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.animateBoom()
+    let newStarsCount = newProps.counter - this.props.counter
 
+    if (newStarsCount <= 0)
+      return
+
+    this.animateBoom()
     $( this.refs.counter ).text( newProps.counter )
 
-    let newStarsCount = newProps.counter - this.props.counter
     let newStars = [];
     let w = this.props.width
       , h = this.props.height
 
     for(var i = 0; i < newStarsCount; ++i) {
-      let radius  = Common.random(20, 40);
+      let radius  = this.sizeState() == 'medium'
+        ? Common.random(30, 40)
+        : Common.random(10, 30)
+
       let scaleX  = radius * 2.0 * 1.0 / ( 512.0 - 13.0);
       let scaleY  = radius * 2.0 * 1.0 / ( 512.0 - 13.0);
 
@@ -99,24 +103,25 @@ export default class StarImpression extends React.Component {
         {
           render: {
             sprite: {
-                xOffset: -0.0,
+                xOffset: -0.03,
                 yOffset: -0.0,
                 xScale: scaleX,
                 yScale: scaleY,
                 texture: require('./images/star-rot.png')
             },
-            opacity: Common.random(0.8, 1.0)
+            opacity: Common.random(1.0, 1.0)
           },
 
-          density: 0.1,
-          restitution: 0.01
+          density: 0.5,
+          restitution: 0.4
         });
 
-      let forceMagnitude = Common.random(0.01, 0.05) * body.mass;
+
+      let forceMagnitude = 0.02 * body.mass;
 
       Body.applyForce(body, body.position, {
-        x: (forceMagnitude + 2.5 * Common.random() * forceMagnitude) * Common.choose([1, -1]),
-        y: -forceMagnitude + Common.random() * -forceMagnitude
+        x: 1.5 * (forceMagnitude + (0.8 + 0.2 * Common.random()) * forceMagnitude) * Common.choose([1, -1]),
+        y: 0.1 * (-forceMagnitude + Common.random() * -forceMagnitude)
       });
       Body.setAngularVelocity(body, Common.random(-0.6, 0.6))
 
@@ -144,6 +149,10 @@ export default class StarImpression extends React.Component {
     }
   }
 
+  sizeState() {
+    return (this.props.width < 800) ? 'small' : 'medium'
+  }
+
   render() {
     let styleVal = {
       maxWidth:  `${this.props.width}px`,
@@ -153,10 +162,8 @@ export default class StarImpression extends React.Component {
       backgroundColor: this.props.background,
     }
 
-    let sizeState = (this.props.width < 800) ? 'small' : 'medium'
-
     return (
-      <div className={ classNames( "star-impression", `-size-${sizeState}` ) } style={styleVal}>
+      <div className={ classNames( "star-impression", `-size-${this.sizeState()}` ) } style={styleVal}>
 
         <div className='static-markup' ref='staticMarkup'>
           <div className='title' ref='title'>
