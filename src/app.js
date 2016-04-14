@@ -10,7 +10,8 @@ class App extends React.Component {
     super()
     this.state= {
       stars: 0,
-      people: 0
+      people: 0,
+      hidden: false
     }
   }
 
@@ -23,17 +24,27 @@ class App extends React.Component {
           this.setState({ stars: this.state.stars + 15, people: this.state.people + 1  })
         }> Boom! </button>
 
-        <div className='showcase'>
-          <StarImpression width={1100} height={750}
-            starsCount={this.state.stars}
-            peopleCount={this.state.people}
-          />
+        <button onClick={() =>
+          this.setState({ hidden: !this.state.hidden  })
+        }> Show/hide </button>
 
-          <StarImpression width={640} height={400}
-            starsCount={this.state.stars}
-            peopleCount={this.state.people}
-          />
-        </div>
+          {
+             (!this.state.hidden) ?
+              (
+                <div className='showcase'>
+                  <StarImpression width={1100} height={750}
+                    starsCount={this.state.stars}
+                    peopleCount={this.state.people}
+                  />
+                 <StarImpression width={600} height={400}
+                    starsCount={this.state.stars}
+                    peopleCount={this.state.people}
+                    engineId='123'
+                  />
+                </div>
+              ) : ''
+          }
+
       </div>
     )
   }

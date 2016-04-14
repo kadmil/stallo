@@ -7,8 +7,11 @@ import './star-impression.styl'
 import Velocity from 'velocity-animate'
 
 // phys
-import { Engine, World, Bodies, Body, Common, Vertices } from 'matter-js'
+import { Engine, World, Bodies, Body, Common, Vertices, Runner } from 'matter-js'
 import CustomRender from './custom-renderer'
+
+
+let EngineCache = {}
 
 export default class StarImpression extends React.Component {
   constructor() {
@@ -17,33 +20,52 @@ export default class StarImpression extends React.Component {
   }
 
   initPhysics() {
-    let elem = this.refs.canvasBox
+    let engineId = this.props.engineId || 'default'
 
     let w = this.props.width
       , h = this.props.height
 
-    let engine = Engine.create({
-      render: {
-        element: elem,
-        controller: CustomRender,
-        options: {
-          background: 'transparent',
-          wireframes: false,
-          width:  w,
-          height: h
-        }
-    }});
+    let elem = this.refs.canvasBox
 
-    let fld = 20
-    let ground = [
-      Bodies.rectangle(w * 0.5, -0.5 * fld, w, fld, { isStatic: true }),
-      Bodies.rectangle(-0.5 * fld, h * 0.5, fld, h, { isStatic: true }),
-      Bodies.rectangle(w + 0.5 * fld, h * 0.5, fld, h, { isStatic: true }),
-      Bodies.rectangle(w * 0.5, h + 0.5 * fld, w, fld, { isStatic: true }),
-    ]
+    let engine;
 
-    World.add(engine.world, ground);
-    Engine.run(engine);
+    if( EngineCache[engineId] ) {
+      engine = EngineCache[engineId].engine
+    } else {
+      engine = Engine.create({})
+
+      let fld = 20
+      let ground = [
+        Bodies.rectangle(w * 0.5, -0.5 * fld, w, fld,    { isStatic: true }),
+        Bodies.rectangle(-0.5 * fld, h * 0.5, fld, h,    { isStatic: true }),
+        Bodies.rectangle(w + 0.5 * fld, h * 0.5, fld, h, { isStatic: true }),
+        Bodies.rectangle(w * 0.5, h + 0.5 * fld, w, fld, { isStatic: true }),
+      ]
+      World.add(engine.world, ground);
+    }
+
+    EngineCache[engineId] = { engine: engine }
+
+
+    let options = {
+      background: 'transparent',
+      wireframes: false,
+      width:  w,
+      height: h
+    }
+
+    engine.render = CustomRender.create({
+      element: elem,
+      options: options
+    });
+    engine.render.options = options;
+
+
+    if( !engine.runner ) {
+      engine.runner = Runner.create()
+    }
+
+    Runner.run( engine.runner, engine)
 
     this.physEngine = engine;
   }
@@ -195,6 +217,11 @@ export default class StarImpression extends React.Component {
 
     this.initPhysics()
   }
+
+  componentWillUnmount() {
+    Runner.stop( this.physEngine.runner )
+  }
+
   shouldComponentUpdate() { return false; }
 }
 
