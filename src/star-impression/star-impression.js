@@ -83,6 +83,9 @@ export default class StarImpression extends React.Component {
     this.animateBoom()
     $( this.refs.counter ).text( newProps.counter )
 
+    if (!this.props.physicsEnabled )
+      return
+
     let newStars = [];
     let w = this.props.width
       , h = this.props.height
@@ -185,7 +188,12 @@ export default class StarImpression extends React.Component {
     )
   }
 
-  componentDidMount() { this.initPhysics() }
+  componentDidMount() { 
+    if (!this.props.physicsEnabled )
+      return
+
+    this.initPhysics()
+  }
   shouldComponentUpdate() { return false; }
 }
 
@@ -197,6 +205,7 @@ StarImpression.propTypes = {
 }
 
 StarImpression.defaultProps = {
+  physicsEnabled: true,
   counter: 0,
   background: '#FF8F92',
   title: 'Ну вот и все, ребята!',
