@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A collection of custom behaviours",
   "main": "dist/stallo.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "start": "node server.js",
     "lint": "eslint src",
