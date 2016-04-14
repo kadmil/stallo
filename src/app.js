@@ -8,18 +8,31 @@ import './app.styl'
 class App extends React.Component {
   constructor() {
     super()
-    this.state = { counter: 0 }
+    this.state= {
+      stars: 0,
+      people: 0
+    }
   }
+
 
   render(props) {
 
     return (
       <div className='playground'>
-        <button onClick={() => this.setState({ counter: this.state.counter + 15 })}> Boom! </button>
+        <button onClick={() =>
+          this.setState({ stars: this.state.stars + 15, people: this.state.people + 1  })
+        }> Boom! </button>
 
         <div className='showcase'>
-          <StarImpression width={1100} height={750} counter={this.state.counter}/>
-          <StarImpression width={640} height={400}  counter={this.state.counter}/>
+          <StarImpression width={1100} height={750}
+            starsCount={this.state.stars}
+            peopleCount={this.state.people}
+          />
+
+          <StarImpression width={640} height={400}
+            starsCount={this.state.stars}
+            peopleCount={this.state.people}
+          />
         </div>
       </div>
     )

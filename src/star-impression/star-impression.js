@@ -75,13 +75,14 @@ export default class StarImpression extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    let newStarsCount = newProps.counter - this.props.counter
+    $( this.refs.counter ).text( newProps.peopleCount )
+
+    let newStarsCount = newProps.starsCount - this.props.starsCount
 
     if (newStarsCount <= 0)
       return
 
     this.animateBoom()
-    $( this.refs.counter ).text( newProps.counter )
 
     if (!this.props.physicsEnabled )
       return
@@ -178,7 +179,7 @@ export default class StarImpression extends React.Component {
           </div>
 
           <div className='impress-counter' ref='counter'>
-            { this.props.counter }
+            { this.props.peopleCount }
           </div>
         </div>
 
@@ -188,7 +189,7 @@ export default class StarImpression extends React.Component {
     )
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     if (!this.props.physicsEnabled )
       return
 
@@ -198,20 +199,24 @@ export default class StarImpression extends React.Component {
 }
 
 StarImpression.propTypes = {
-  counter:     React.PropTypes.number,
   background:  React.PropTypes.string,
   title:       React.PropTypes.string,
   description: React.PropTypes.string,
+
+  starsCount:  React.PropTypes.number,
+  peopleCount: React.PropTypes.number
 }
 
 StarImpression.defaultProps = {
+  starsCount: 0,
+  peopleCount: 0,
+
   physicsEnabled: true,
-  counter: 0,
   background: '#FF8F92',
   title: 'Ну вот и все, ребята!',
   description: `
     Я бы совсем не справился без вас, и все это было просто замечательно!
-    А вы как считаете? Оцените презентацию с помощью эмоций.
+    А вы как считаете? Оцените презентацию с помощью звездочек.
   `
 }
 
