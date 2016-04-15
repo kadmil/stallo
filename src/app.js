@@ -21,7 +21,7 @@ class App extends React.Component {
     return (
       <div className='playground'>
         <button onClick={() =>
-          this.setState({ stars: this.state.stars + 15, people: this.state.people + 1  })
+          this.setState({ stars: this.state.stars + 15, people: this.state.people + 1, score: Math.random() })
         }> Boom! </button>
 
         <button onClick={() =>
@@ -35,10 +35,12 @@ class App extends React.Component {
                   <StarImpression width={1100} height={750}
                     starsCount={this.state.stars}
                     peopleCount={this.state.people}
+                    averageScore={this.state.score}
                   />
                  <StarImpression width={600} height={400}
                     starsCount={this.state.stars}
                     peopleCount={this.state.people}
+                    averageScore={this.state.score}
                     engineId='123'
                   />
                 </div>

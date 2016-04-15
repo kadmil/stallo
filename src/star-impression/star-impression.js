@@ -71,23 +71,22 @@ export default class StarImpression extends React.Component {
   }
 
   animateBoom() {
-    Velocity(this.refs.title, { translateY: -50 },
-      {'duration': 60, delay: 45, easing: 'easeOutExpo', complete: () => {
-        Velocity(
-          this.refs.title,
-          { translateY: [ 0, [500, 20], -50] },
-          { duration: 400, queue: false }
-        )
-      }})
+    let movingParts = [
+      { name: 'title', shift: -50, delay: 45 },
+      { name: 'description', shift: -65, delay: 20 },
+      { name: 'additional', shift: -70, delay: 0}
+    ]
 
-    Velocity(this.refs.description, { translateY: -65 },
-      {'duration': 60, easing: 'easeOutExpo', complete: () => {
-         Velocity(
-          this.refs.description,
-          { translateY: [ 0, [500, 20], -65] },
-          { duration: 400, queue: false }
-        )
-      }})
+    movingParts.forEach((part) => {
+      Velocity(this.refs[part.name], { translateY: part.shift },
+        {'duration': 60, delay: part.delay, easing: 'easeOutExpo', complete: () => {
+          Velocity(
+            this.refs[part.name],
+            { translateY: [ 0, [500, 20], part.shift] },
+            { duration: 400, queue: false }
+          )
+        }})
+    })
 
     Velocity(
       this.refs.counter,
@@ -97,7 +96,8 @@ export default class StarImpression extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    $( this.refs.counter ).text( newProps.peopleCount )
+    $( this.refs.peopleCount ).text( newProps.peopleCount )
+    $( this.refs.averageScore ).text( newProps.averageScore.toFixed(1) )
 
     let newStarsCount = newProps.starsCount - this.props.starsCount
 
@@ -200,8 +200,31 @@ export default class StarImpression extends React.Component {
             { this.props.description }
           </div>
 
+          <div className='additional' ref='additional'>
+            <span className='link'>
+              { this.props.link }
+            </span>
+          </div>
+
+
           <div className='impress-counter' ref='counter'>
-            { this.props.peopleCount }
+
+            <div className='count-row'>
+              <span className='people-count count' ref='peopleCount'>
+                { this.props.peopleCount }
+              </span>
+
+              <span className='label'>человек проголосовало</span>
+            </div>
+
+             <div className='count-row'>
+              <span className='people-count count' ref='averageScore'>
+                { this.props.averageScore.toFixed(1) }
+              </span>
+
+              <span className='label'>средняя оценка</span>
+            </div>
+
           </div>
         </div>
 
@@ -237,13 +260,16 @@ StarImpression.propTypes = {
 StarImpression.defaultProps = {
   starsCount: 0,
   peopleCount: 0,
+  averageScore: 0.0,
+
+  link: 'ficus.io',
 
   physicsEnabled: true,
-  background: '#FF8F92',
-  title: 'Ну вот и все, ребята!',
+  background: '#67A793',
+  title: 'Оцените презентацию',
   description: `
-    Я бы совсем не справился без вас, и все это было просто замечательно!
-    А вы как считаете? Оцените презентацию с помощью звездочек.
+    Насколько вам понравилось выступление? Поставьте свою оценку
+    с помощью мобильного телефона.
   `
 }
 

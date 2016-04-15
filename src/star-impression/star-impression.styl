@@ -58,11 +58,11 @@
 
   &.-size-small .title
     font-size 36px
-    margin-top 60px
+    margin-top 40px
 
   &.-size-medium .title
     font-size 56px
-    margin-top 80px
+    margin-top 60px
 
   .description
     color white
@@ -77,32 +77,63 @@
 
   &.-size-medium .description
     font-size 28px
-    margin-top 20px
+    margin-top 15px
     max-width 65%
 
-  make-circle($radius)
-    width $radius
-    height $radius
-    border-radius $radius
+  .additional
+    margin-top 35px
+
+  .link
+    color white
+    font-family  Helvetica
+    font-weight 500
+    letter-spacing 1px
+    font-size 28px
+    padding 7px 14px
     display inline-block
-    line-height $radius
+    border-radius 8px
+    border 4px solid white
+    box-sizing border-box
+
 
   .impress-counter
-    color white
-    border 8px solid white
+    display inline-block
+    background-color white
     font-family Helvetica
     font-weight 700
+    position relative
+    border-radius 5px
+    color #67A793
+    padding 5px 15px
+
+    padding-right 35px
+
+    .count-row
+      .count
+        display inline-block
+        min-width 85px
+        text-align right
+        font-size 56px
+        line-height 1
+      .label
+        font-family 'ALSSans'
+        font-size 26px
+        display inline-block
+        margin-left 20px
+        max-width 160px
+        line-height 1.0
+        text-align left
 
   &.-size-medium .impress-counter
-    make-circle(135px)
     font-size 70px
     margin-top 35px
     border-width 12px
 
   &.-size-small .impress-counter
-    make-circle(65px)
     font-size 36px
     margin-top 20px
     border-width 8px
+
+
 
 
