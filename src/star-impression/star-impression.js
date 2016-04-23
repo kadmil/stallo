@@ -13,10 +13,17 @@ import CustomRender from './custom-renderer'
 
 let EngineCache = {}
 
+const starAsset = require('./images/star-rot.png')
+
 export default class StarImpression extends React.Component {
   constructor() {
     super()
     this.stars = []
+  }
+
+  preloadAssets() {
+    let starImage = new Image()
+    starImage.src = starAsset
   }
 
   initPhysics() {
@@ -133,7 +140,7 @@ export default class StarImpression extends React.Component {
                 yOffset: -0.0,
                 xScale: scaleX,
                 yScale: scaleY,
-                texture: require('./images/star-rot.png')
+                texture: starAsset
             },
             opacity: Common.random(1.0, 1.0)
           },
@@ -239,6 +246,7 @@ export default class StarImpression extends React.Component {
       return
 
     this.initPhysics()
+    this.preloadAssets()
   }
 
   componentWillUnmount() {
