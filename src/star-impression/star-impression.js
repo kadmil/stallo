@@ -221,7 +221,7 @@ export default class StarImpression extends React.Component {
                 { this.props.peopleCount }
               </span>
 
-              <span className='label'>человек проголосовало</span>
+              <span className='label'>{this.props.peopleCountLabel}</span>
             </div>
 
              <div className='count-row'>
@@ -229,7 +229,7 @@ export default class StarImpression extends React.Component {
                 { this.props.averageScore.toFixed(1) }
               </span>
 
-              <span className='label'>средняя оценка</span>
+              <span className='label'>{this.props.averageScoreLabel}</span>
             </div>
 
           </div>
@@ -278,7 +278,9 @@ StarImpression.defaultProps = {
   description: `
     Насколько вам понравилось выступление? Поставьте свою оценку
     с помощью мобильного телефона.
-  `
+  `,
+  peopleCountLabel: 'человек проголосовало',
+  averageScoreLabel: 'средняя оценка',
 }
 
 
