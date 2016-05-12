@@ -204,7 +204,9 @@ export default class StarImpression extends React.Component {
           </div>
 
           <div className='description' ref='description'>
-            { this.props.description }
+            { this.props.descriptionTitle }
+            <br/>
+            { this.props.descriptionLead }
           </div>
 
           <div className='additional' ref='additional'>
@@ -259,7 +261,10 @@ export default class StarImpression extends React.Component {
 StarImpression.propTypes = {
   background:  React.PropTypes.string,
   title:       React.PropTypes.string,
-  description: React.PropTypes.string,
+  descriptionTitle: React.PropTypes.string,
+  descriptionLead: React.PropTypes.string,
+  peopleCountLabel: React.PropTypes.string,
+  averageScoreLabel: React.PropTypes.string,
 
   starsCount:  React.PropTypes.number,
   peopleCount: React.PropTypes.number
@@ -275,10 +280,8 @@ StarImpression.defaultProps = {
   physicsEnabled: true,
   background: '#67A793',
   title: 'Оцените презентацию',
-  description: `
-    Насколько вам понравилось выступление? Поставьте свою оценку
-    с помощью мобильного телефона.
-  `,
+  descriptionTitle: 'Насколько вам понравилось выступление?',
+  descriptionLead: 'Поставьте свою оценку с помощью мобильного телефона.',
   peopleCountLabel: 'человек проголосовало',
   averageScoreLabel: 'средняя оценка',
 }
